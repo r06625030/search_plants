@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class='container'>
+    <h1>HOME</h1>
+    <h2>植物特徵查詢</h2>
+    <form method='POST' action=".">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="查詢植物"/>
+    </form>
+    {% if request.method == 'POST' %}
+        {% if plantsByFamily|length == 0 %}
+            <div class='search_result'>
+                <p>找不到結果，請重新輸入其他條件</p>
+            </div>
+        {% endif %}
+        <div class='search_result'>
+            <tbody>
+            {% for family, plants in plantsByFamily.items %}
+                <tr>
+                    <td>{{ family }}</td>
+                </tr>
+                <br>
+                {% for plant in plants %}
+                    <tr>
+                        <td><a href={{ plant.url }}>{{ plant.cName }}</a></td>
+                    </tr>
+                {% endfor %}
+                <br>
+            {% endfor %}
+            </tbody>
+        </div>
+    {% endif %}
+</div>
+</body>
+</html>
