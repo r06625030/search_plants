@@ -38,20 +38,3 @@ def plantsFilter(formdata):
             output[plant.fName] = []
         output[plant.fName].append(plant)
     return output
-
-
-"""
-class PlantsFilter(django_filters.FilterSet):
-    family =
-    name =
-    sName =
-    stemType =
-    leafType =
-    phyllotaxy =
-    leafOther =
-    inflorescence = 
-    flowerColor =
-    class Meta:
-        model = Plants
-        fields = '__all__'
-"""

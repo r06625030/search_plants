@@ -31,7 +31,7 @@ class SearchForm(forms.Form):
         ('單生', '單生'),
         ('總狀', '總狀花序'),
         ('繖房', '繖房花序'),
-        ('繖型', '繖型花序'),
+        ('繖形', '繖形花序'),
         ('頭狀', '頭狀花序'),
         ('隱頭', '隱頭花序'),
         ('穗狀', '穗狀花序'),
@@ -55,13 +55,23 @@ class SearchForm(forms.Form):
         ('穎果', '穎果'), ('胞果', '胞果'), ('翅果', '翅果'), ('堅果', '堅果'), ('離果', '離果'),
         ('隱花果', '隱花果'), ('孢子', '孢子'),
     ]
-    family = forms.CharField(label='科別（中或英文）', max_length=10, required=False)
-    name = forms.CharField(label='植物名稱（中或英文）', max_length=10, required=False)
-    sName = forms.CharField(label='學名', max_length=10, required=False)
-    stemType = forms.ChoiceField(label='外型', choices=STEM, required=False)
-    leafType = forms.ChoiceField(label='葉型態', choices=LEAF_T, required=False)
-    phyllotaxy = forms.ChoiceField(label='葉序', choices=LEAF_P, required=False)
-    leafOther = forms.CharField(label='其他葉特徵描述', max_length=10, required=False)
-    inflorescence = forms.ChoiceField(label='花序', choices=FLOWER_I, required=False)
-    flowerColor = forms.ChoiceField(label='花色', choices=FLOWER_C, required=False)
-    fruit = forms.ChoiceField(label='果實', choices=FRUIT, required=False)
+    family = forms.CharField(label='科別（中或英文）', max_length=10, required=False,
+                             widget=forms.TextInput(attrs={'class': 'form-control'}))
+    name = forms.CharField(label='植物名稱（中或英文）', max_length=10, required=False,
+                           widget=forms.TextInput(attrs={'class': 'form-control'}))
+    sName = forms.CharField(label='學名', max_length=10, required=False,
+                            widget=forms.TextInput(attrs={'class': 'form-control'}))
+    stemType = forms.ChoiceField(label='外型', choices=STEM, required=False,
+                                 widget=forms.Select(attrs={'class': 'form-control form-control-sm'}))
+    leafType = forms.ChoiceField(label='葉型態', choices=LEAF_T, required=False,
+                                 widget=forms.Select(attrs={'class': 'form-control form-control-sm'}))
+    phyllotaxy = forms.ChoiceField(label='葉序', choices=LEAF_P, required=False,
+                                 widget=forms.Select(attrs={'class': 'form-control form-control-sm'}))
+    leafOther = forms.CharField(label='其他葉特徵描述', max_length=10, required=False,
+                                widget=forms.TextInput(attrs={'class': 'form-control'}))
+    inflorescence = forms.ChoiceField(label='花序', choices=FLOWER_I, required=False,
+                                 widget=forms.Select(attrs={'class': 'form-control form-control-sm'}))
+    flowerColor = forms.ChoiceField(label='花色', choices=FLOWER_C, required=False,
+                                 widget=forms.Select(attrs={'class': 'form-control form-control-sm'}))
+    fruit = forms.ChoiceField(label='果實', choices=FRUIT, required=False,
+                                 widget=forms.Select(attrs={'class': 'form-control form-control-sm'}))

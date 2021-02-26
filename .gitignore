@@ -1,3 +1,5 @@
 venv/
 db.sqlite3
 mainsite/*.txt
+home_old.html
+home_old.css

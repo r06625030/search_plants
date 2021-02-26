@@ -1,41 +1,138 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="zh-Hant-TW">
+
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>植物特徵查詢</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'bootstrap/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="{% static 'css/home.css' %}" rel="stylesheet">
+
 </head>
+
 <body>
-<div class='container'>
-    <h1>HOME</h1>
-    <h2>植物特徵查詢</h2>
-    <form method='POST' action=".">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="查詢植物"/>
-    </form>
-    {% if request.method == 'POST' %}
-        {% if plantsByFamily|length == 0 %}
-            <div class='search_result'>
-                <p>找不到結果，請重新輸入其他條件</p>
-            </div>
-        {% endif %}
-        <div class='search_result'>
-            <tbody>
-            {% for family, plants in plantsByFamily.items %}
-                <tr>
-                    <td>{{ family }}</td>
-                </tr>
-                <br>
-                {% for plant in plants %}
-                    <tr>
-                        <td><a href={{ plant.url }}>{{ plant.cName }}</a></td>
-                    </tr>
-                {% endfor %}
-                <br>
-            {% endfor %}
-            </tbody>
+
+<div class="d-flex" id="wrapper">
+
+    <!-- Sidebar -->
+    <div class="bg-light border-right" id="sidebar-wrapper">
+        <div class="sidebar-heading">特徵類別</div>
+        <div class="list-group list-group-flush">
+            <form method="POST" action=".">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <input type="submit" class="btn btn-primary" value="查詢植物"/>
+            </form>
         </div>
-    {% endif %}
+    </div>
+    <!-- /#sidebar-wrapper -->
+
+    <!-- Page Content -->
+    <div id="page-content-wrapper">
+        <nav class="navbar navbar-light bg-light border-bottom">
+            <button class="btn btn-primary" id="menu-toggle">搜尋欄</button>
+            <a class="nav-link" href="http://kplant.biodiv.tw/index.htm">資料來源：認識植物 <span
+                    class="sr-only">(current)</span></a>
+        </nav>
+
+        <div class="container-fluid">
+            <!-- 如果request是GET表示沒有送出表單，顯示初始訊息 -->
+            {% if request.method == "GET" %}
+                <div class="card card-body">
+                    <h1 class="mt-4">植物特徵查詢</h1>
+                    <p>在側邊的欄位輸入搜尋條件，便能找出符合條件的植物，並依照科別排列。</p>
+                </div>
+            {% endif %}
+
+            {% if request.method == "POST" %}
+                <!-- 無結果時顯示 -->
+                {% if plantsByFamily|length == 0 %}
+                    <div class="card card-body">
+                        找不到結果，請重新輸入其他條件
+                    </div>
+                {% endif %}
+
+                {% for family, plants in plantsByFamily.items %}
+                    <br>
+                    <!-- 植物科按鈕 -->
+                    <p>
+                        <button class="btn btn-primary btn-family" type="button" data-toggle="collapse"
+                                data-target="#{{ family }}"
+                                aria-expanded="false" aria-controls="collapseExample">
+                            {{ family }}
+                        </button>
+                    </p>
+                    <!-- 植物表格 -->
+                    <div class="collapse" id={{ family }}>
+                        <div class="card card-body">
+                            <table>
+                                <tbody>
+                                <tr>
+                                    {% for plant in plants %}
+                                        <td><a href={{ plant.url }}>{{ plant.cName }}</a></td>
+                                        {% if forloop.counter|divisibleby:10 %}
+                                            </tr>
+                                        {% endif %}
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+            <!-- 回到最上面按鈕 -->
+            <button onclick="topFunction()" id="myBtn" title="Go to top">Top</button>
+        </div>
+    </div>
+    <!-- /#page-content-wrapper -->
+
 </div>
+<!-- /#wrapper -->
+
+<!-- Bootstrap core JavaScript -->
+<script src="{% static 'bootstrap/vendor/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'bootstrap/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+<!-- Menu Toggle Script -->
+<script>
+    $("#menu-toggle").click(function (e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+    });
+</script>
+<!-- Scroll Top Btn -->
+<script>
+    //Get the button
+    var mybutton = document.getElementById("myBtn");
+
+    // When the user scrolls down 20px from the top of the document, show the button
+    window.onscroll = function () {
+        scrollFunction()
+    };
+
+    function scrollFunction() {
+        if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+            mybutton.style.display = "block";
+        } else {
+            mybutton.style.display = "none";
+        }
+    }
+
+    // When the user clicks on the button, scroll to the top of the document
+    function topFunction() {
+        document.body.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
+    }
+</script>
 </body>
+
 </html>
